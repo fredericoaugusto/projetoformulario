@@ -21,16 +21,16 @@ function App() {
     const formElements = event.target.elements;
     const newErrors = {};
 
-    // Validação dos campos
+    // Validação
     if (!formElements.nome.value) newErrors.nome = "Nome é obrigatório";
     if (!formElements.sobrenome.value)
       newErrors.sobrenome = "Sobrenome é obrigatório";
     if (!formElements.email.value) newErrors.email = "E-mail é obrigatório";
     if (!formElements.tel.value) newErrors.tel = "Telefone é obrigatório";
-    if (!formElements.position.value)
-      newErrors.position = "Cargo desejado é obrigatório";
-    if (!formElements.education.value)
-      newErrors.education = "Escolaridade é obrigatória";
+    if (!formElements.posicao.value)
+      newErrors.posicao = "Cargo desejado é obrigatório";
+    if (!formElements.educacao.value)
+      newErrors.educacao = "Escolaridade é obrigatória";
 
     const fileInput = formElements.file;
     const allowedExtensions = ["doc", "docx", "pdf"];
@@ -40,14 +40,12 @@ function App() {
       const uploadedFile = fileInput.files[0];
       const fileSize = uploadedFile.size;
 
-      // Verifica extensão do arquivo
+      // Tamanho do arquivo
       const fileExtension = uploadedFile.name.split(".").pop().toLowerCase();
       if (!allowedExtensions.includes(fileExtension)) {
         newErrors.file =
           "Formato de arquivo inválido. Apenas .doc, .docx ou .pdf são permitidos.";
       }
-
-      // Verifica tamanho do arquivo
       if (fileSize > maxFileSize) {
         newErrors.file = "O arquivo excede o tamanho máximo permitido (1MB).";
       }
@@ -58,7 +56,7 @@ function App() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // Se não houver erros, processar o formulário
+      // Se tudo for validado, enviar o formulário
       console.log("Formulário enviado com sucesso");
       setErrors({});
     }
@@ -140,22 +138,20 @@ function App() {
                 </Box>
               </HStack>
               <Box w="100%">
-                <FormLabel htmlFor="position">Cargo Desejado</FormLabel>
+                <FormLabel htmlFor="posicao">Cargo Desejado</FormLabel>
                 <Input
-                  id="position"
-                  isInvalid={!!errors.position}
+                  id="posicao"
+                  isInvalid={!!errors.posicao}
                   borderColor="green.600"
                 />
-                {errors.position && (
-                  <Box color="red.500">{errors.position}</Box>
-                )}
+                {errors.posicao && <Box color="red.500">{errors.posicao}</Box>}
               </Box>
               <Box w="100%">
-                <FormLabel htmlFor="education">Escolaridade</FormLabel>
+                <FormLabel htmlFor="educacao">Escolaridade</FormLabel>
                 <Select
-                  id="education"
+                  id="educacao"
                   placeholder="Selecione a escolaridade"
-                  isInvalid={!!errors.education}
+                  isInvalid={!!errors.educacao}
                   borderColor="green.600"
                 >
                   <option value="fundamental">Ensino Fundamental</option>
@@ -163,13 +159,13 @@ function App() {
                   <option value="superior">Ensino Superior</option>
                   <option value="pos">Pós-graduação</option>
                 </Select>
-                {errors.education && (
-                  <Box color="red.500">{errors.education}</Box>
+                {errors.educacao && (
+                  <Box color="red.500">{errors.educacao}</Box>
                 )}
               </Box>
               <Box w="100%">
-                <FormLabel htmlFor="observations">Observações</FormLabel>
-                <Textarea id="observations" borderColor="green.600" />
+                <FormLabel htmlFor="observacoes">Observações</FormLabel>
+                <Textarea id="observacoes" borderColor="green.600" />
               </Box>
               <Box w="100%">
                 <FormLabel htmlFor="file">Arquivo (Currículo)</FormLabel>

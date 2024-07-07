@@ -43,9 +43,11 @@
   cd send-mail-main
   ```
   2. Compile e execute o projeto:
+```
   ./mvnw spring-boot:run
+```
 
-  3. No backend para receber em seu email é necessário seguir os seguintes passos:
+  4. No backend para receber em seu email é necessário seguir os seguintes passos:
 
   3.1. Criar uma SENHA DE APP no site do google logando com sua conta que deseja receber o email clicando [aqui](https://myaccount.google.com/apppasswords)
     3.1.1. Basta entrar com sua conta, criar um novo nome de app e depois o google irá lhe fornecer uma senha de 16 digitos separados em 4 grupos de 4 digitos que deverá ser usada conforme item 3.3.2

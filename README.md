@@ -46,14 +46,17 @@
 
   3. No backend para receber em seu email é necessário seguir os seguintes passos:
 
-  3.1. Criar uma SENHA DE APP no site do google logando com sua conta que deseja receber o email clicando aqui
+  3.1. Criar uma SENHA DE APP no site do google logando com sua conta que deseja receber o email clicando [aqui](https://myaccount.google.com/apppasswords)
+    3.1.1. Basta entrar com sua conta, criar um novo nome de app e depois o google irá lhe fornecer uma senha de 16 digitos separados em 4 grupos de 4 digitos que deverá ser usada conforme item 3.3.2
 
   3.2. Após isso deve se direcionar ao código e ir no arquivo MailService e alterar o código na linha 30 onde mostra helper.setTo(to); e substituir o to para "seu-email". Exemplo de como deve ficar: helper.setTo("teste@gmail.com")
 
-  3.3. Por último, deve se direcionar ao arquivo application.properties e alterar as seguintes informações:
+  3.3. Após isso, deve se direcionar ao arquivo application.properties e alterar as seguintes informações:
   3.3.1. Na linha 16 deve ser alterado com o seu email, ficando, por exemplo: spring.mail.username=teste@gmail.com
 
   3.3.2. Na linha 17 deve ser colocada a senha que o google irá fornecer ao seguir os passos previstos no 3.1
+
+  3.4 O seu usuário e senha do BANCO DE DADOS devem ser inseridos nas linhas 10 e 11, respectivamente, do arquivo application.properties, conforme configuração do seu banco de dados
 
   4.0 Após essas configurações pode seguir para a inicialização do programa
 

@@ -78,8 +78,8 @@ Certifique-se de que o back-end está rodando e configure as requisições no fr
 ## Links Úteis
 
 - [Vite Documentation](https://vitejs.dev/guide/)
-- [Chakra UI v2 Documentation](https://v2.chakra-ui.com/docs/components/modal/usage)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [Chakra UI v2 Documentation](https://v2.chakra-ui.com/getting-started)
+- [React Documentation](https://react.dev/learn)
 - [Spring Boot Documentation](https://spring.io/projects/spring-boot)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
   

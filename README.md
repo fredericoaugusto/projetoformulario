@@ -1,6 +1,6 @@
 ## Projeto Formulário de Inscrição
 ### O projeto consiste em um formulário simulando uma inscrição em uma vaga de emprego, com um front-end desenvolvido em React e um back-end desenvolvido em Spring Boot. Sendo necessário o preenchimento de algumas informações que são validadas e o envio de um arquivo de currículo que também é validado tanto em sua extensão, quanto em seu tamanho, sendo necessário que o arquivo não passe de 1MB de tamanho e o arquivo seja .doc .pdf ou .docx.
-O eventual recrutador precisará seguir os passos dados a seguir, valendo ressaltar que o projeto foi pensado para receber um email de gmail, visto que, quando o formulário for preenchido e enviado, será enviado também um email para o eventual recrutador contendo as informacões e o arquivo do currículo.
+#### O eventual recrutador precisará seguir os passos dados a seguir, valendo ressaltar que o projeto foi pensado para receber um email de gmail, visto que, quando o formulário for preenchido e enviado, será enviado também um email para o eventual recrutador contendo as informacões e o arquivo do currículo.
 
 ## Estrutura do Projeto
   front: Contém o código do front-end.

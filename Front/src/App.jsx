@@ -10,27 +10,38 @@ import {
   Button,
   Select,
   Textarea,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
 } from "@chakra-ui/react";
+import axios from "axios";
 
 function App() {
   const [errors, setErrors] = useState({});
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formElements = event.target.elements;
     const newErrors = {};
 
-    // Validação
+    // Validacao
     if (!formElements.nome.value) newErrors.nome = "Nome é obrigatório";
     if (!formElements.sobrenome.value)
       newErrors.sobrenome = "Sobrenome é obrigatório";
     if (!formElements.email.value) newErrors.email = "E-mail é obrigatório";
-    if (!formElements.tel.value) newErrors.tel = "Telefone é obrigatório";
-    if (!formElements.posicao.value)
-      newErrors.posicao = "Cargo desejado é obrigatório";
-    if (!formElements.educacao.value)
-      newErrors.educacao = "Escolaridade é obrigatória";
+    if (!formElements.telefone.value)
+      newErrors.telefone = "Telefone é obrigatório";
+    if (!formElements.cargoDesejado.value)
+      newErrors.cargoDesejado = "Cargo desejado é obrigatório";
+    if (!formElements.escolaridade.value)
+      newErrors.escolaridade = "Escolaridade é obrigatória";
 
     const fileInput = formElements.file;
     const allowedExtensions = ["doc", "docx", "pdf"];
@@ -40,7 +51,7 @@ function App() {
       const uploadedFile = fileInput.files[0];
       const fileSize = uploadedFile.size;
 
-      // Tamanho do arquivo
+      // Validacao do tamanho do arquivo e do formato
       const fileExtension = uploadedFile.name.split(".").pop().toLowerCase();
       if (!allowedExtensions.includes(fileExtension)) {
         newErrors.file =
@@ -56,9 +67,35 @@ function App() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // Se tudo for validado, enviar o formulário
-      console.log("Formulário enviado com sucesso");
-      setErrors({});
+      // Se validado passa
+      const formData = new FormData();
+      formData.append(
+        "nome",
+        `${formElements.nome.value} ${formElements.sobrenome.value}`
+      );
+      formData.append("email", formElements.email.value);
+      formData.append("telefone", formElements.telefone.value);
+      formData.append("cargoDesejado", formElements.cargoDesejado.value);
+      formData.append("escolaridade", formElements.escolaridade.value);
+      formData.append("observacoes", formElements.observacoes.value);
+      formData.append("curriculo", fileInput.files[0]);
+
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/curriculo/",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("Formulário enviado com sucesso", response.data);
+        setErrors({});
+        onOpen(); // Modal de confirmacao do envio
+      } catch (error) {
+        console.error("Erro ao enviar o formulário", error);
+      }
     }
   };
 
@@ -127,31 +164,35 @@ function App() {
                   {errors.email && <Box color="red.500">{errors.email}</Box>}
                 </Box>
                 <Box w="100%">
-                  <FormLabel htmlFor="tel">Telefone com DDD</FormLabel>
+                  <FormLabel htmlFor="telefone">Telefone com DDD</FormLabel>
                   <Input
-                    id="tel"
-                    type="tel"
-                    isInvalid={!!errors.tel}
+                    id="telefone"
+                    type="telefone"
+                    isInvalid={!!errors.telefone}
                     borderColor="green.600"
                   />
-                  {errors.tel && <Box color="red.500">{errors.tel}</Box>}
+                  {errors.telefone && (
+                    <Box color="red.500">{errors.telefone}</Box>
+                  )}
                 </Box>
               </HStack>
               <Box w="100%">
-                <FormLabel htmlFor="posicao">Cargo Desejado</FormLabel>
+                <FormLabel htmlFor="cargoDesejado">Cargo Desejado</FormLabel>
                 <Input
-                  id="posicao"
-                  isInvalid={!!errors.posicao}
+                  id="cargoDesejado"
+                  isInvalid={!!errors.cargoDesejado}
                   borderColor="green.600"
                 />
-                {errors.posicao && <Box color="red.500">{errors.posicao}</Box>}
+                {errors.cargoDesejado && (
+                  <Box color="red.500">{errors.cargoDesejado}</Box>
+                )}
               </Box>
               <Box w="100%">
-                <FormLabel htmlFor="educacao">Escolaridade</FormLabel>
+                <FormLabel htmlFor="escolaridade">Escolaridade</FormLabel>
                 <Select
-                  id="educacao"
+                  id="escolaridade"
                   placeholder="Selecione a escolaridade"
-                  isInvalid={!!errors.educacao}
+                  isInvalid={!!errors.escolaridade}
                   borderColor="green.600"
                 >
                   <option value="fundamental">Ensino Fundamental</option>
@@ -159,8 +200,8 @@ function App() {
                   <option value="superior">Ensino Superior</option>
                   <option value="pos">Pós-graduação</option>
                 </Select>
-                {errors.educacao && (
-                  <Box color="red.500">{errors.educacao}</Box>
+                {errors.escolaridade && (
+                  <Box color="red.500">{errors.escolaridade}</Box>
                 )}
               </Box>
               <Box w="100%">
@@ -201,6 +242,7 @@ function App() {
                   fontSize="xl"
                   mt="2"
                   _hover={{ bg: "green.800" }}
+                  isDisabled={isOpen} // Desabilita o botao quando abre o modal
                 >
                   Enviar
                 </Button>
@@ -209,6 +251,21 @@ function App() {
           </form>
         </Center>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Formulário Enviado</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <p>Sua inscrição foi feita com sucesso!</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={onClose}>
+              Fechar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
